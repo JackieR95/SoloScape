@@ -7,8 +7,8 @@ I wanted to simulate the satisfying progression of a fantasy RPG—leveling up s
 ---
 
 ## 🎥 Videos
-- [Code Demo](https://www.youtube.com/watch?v=YOUR_DEMO_VIDEO_ID_HERE)
-- [Code Walkthrough](https://www.youtube.com/watch?v=YOUR_WALKTHROUGH_VIDEO_ID_HERE)
+- [Code Demo](https://share.icloud.com/photos/073PS3gf3QVibmdz-qAU88AuQ)
+- [Code Walkthrough](https://drive.google.com/file/d/1Ob_IVREfzH2lw9jCJfhCqZrIDuIuqAb1/view?usp=sharing)
 
 ---
 
