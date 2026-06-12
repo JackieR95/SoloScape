@@ -13,6 +13,15 @@ I wanted to simulate the satisfying progression of a fantasy RPG—leveling up s
 
 ---
 
+## 📲 Download & Test on Your Phone
+
+You can download and install the build to test it directly on your phone:
+
+- **iOS**: [Expo Build](https://expo.dev/accounts/jackier/projects/SoloScape/builds/edd44b9e-7423-4573-8b0d-a9325e762958)
+- **Android**: [Expo Build](https://expo.dev/accounts/jackier/projects/SoloScape/builds/f9f6d3aa-9997-4ed8-b3ac-bf594decc0d9)
+
+---
+
 ## 🎮 What is SoloScape?
 
 SoloScape is an active-meets-idle incremental RPG. The core game loop revolves around managing your character's activities, exploring rooms, gathering raw materials, and watching your skills level up.
