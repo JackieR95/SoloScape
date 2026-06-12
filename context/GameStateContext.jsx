@@ -76,6 +76,24 @@ export function GameStateProvider({ children }) {
     saveState();
   }, [resources, skills, hasPlayed, volume, isLoaded]);
 
+  // ==========================================
+  // AUDIO & SOUND SYSTEM CONFIGURATION
+  // ==========================================
+  
+  /**
+   * BACKGROUND MUSIC CREDIT & LICENSING ATTRIBUTION:
+   * 
+   * Song Title: Lo-Bit 8 ( LoFi , Nostalgic )
+   * Artist Name: HoliznaPATREON
+   * Source: Free Music Archive
+   * License Type: CC BY-NC-ND (Attribution-NonCommercial-NoDerivatives)
+   * 
+   * Usage Terms:
+   * - Personal use allowed.
+   * - Commercial use not allowed.
+   * - Not for video, YouTube, Instagram, Facebook, podcast, and other derivative works.
+   */
+
   // Background Music continuous loop setup
   useEffect(() => {
     let active = true;
@@ -88,6 +106,7 @@ export function GameStateProvider({ children }) {
           shouldRouteThroughEarpieceAndroid: false,
         });
 
+        // Load and play the background music track
         const { sound } = await Audio.Sound.createAsync(
           require("../assets/sound/backgroundMusic.mp3"),
           {
@@ -100,6 +119,7 @@ export function GameStateProvider({ children }) {
         if (active) {
           bgMusicRef.current = sound;
         } else {
+          // Prevent memory leaks if component unmounted before load finished
           sound.unloadAsync();
         }
       } catch (e) {
@@ -120,7 +140,7 @@ export function GameStateProvider({ children }) {
     };
   }, [isLoaded]);
 
-  // Adjust volume dynamically when volume state changes
+  // Adjust background music volume dynamically when volume state changes
   useEffect(() => {
     if (bgMusicRef.current) {
       bgMusicRef.current.setVolumeAsync(volume).catch((e) =>
@@ -130,12 +150,18 @@ export function GameStateProvider({ children }) {
   }, [volume]);
 
   // Bubble click sound trigger function
+  // Loaded dynamically on each tap and unloaded automatically on finish to avoid memory leak build-ups
   const playBubbleClick = async () => {
     try {
       const { sound } = await Audio.Sound.createAsync(
         require("../assets/sound/bubbleClick.wav"),
-        { shouldPlay: true, volume: Math.min(1.0, volume * 1.5) }
+        { 
+          shouldPlay: true, 
+          // Amplify click by 50% relative to settings volume (capped at 100% / 1.0) so it stands out above background music
+          volume: Math.min(1.0, volume * 1.5) 
+        }
       );
+      // Auto-unload instance from memory once playback finishes
       sound.setOnPlaybackStatusUpdate((status) => {
         if (status.didJustFinish) {
           sound.unloadAsync();
