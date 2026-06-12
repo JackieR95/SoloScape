@@ -1,3 +1,11 @@
+/**
+ * File: app/(tabs)/game.jsx
+ * Description: Main gameplay viewport screen that renders the active rooms (My House, Forest, Mine/Basement, 
+ *              and shop lockouts), processes navigation arrow controls, and handles resource collection taps/particles.
+ * Author: Jacqueline Rael
+ * Date Created: 06/12/2026
+ */
+
 import React, { useState } from "react";
 import { View, Text, Pressable } from "react-native";
 import { Image } from "expo-image";
@@ -91,9 +99,11 @@ export default function GameScreen() {
   return (
     <SafeAreaView className="flex-1 bg-neutral-950 p-4 justify-between">
       
-      {/* Location Header */}
       <View className="items-center py-2 border-b border-neutral-800">
-        <Text className="text-emerald-400 font-mono uppercase tracking-widest text-lg font-bold">
+        <Text 
+          style={{ color: "#9775a6" }}
+          className="font-mono uppercase tracking-widest text-lg font-bold"
+        >
           {currentRoom === "room" ? "My House" :
            currentRoom === "potion-locked" ? "Potion Room" :
            currentRoom === "blacksmith-locked" ? "Blacksmith" :

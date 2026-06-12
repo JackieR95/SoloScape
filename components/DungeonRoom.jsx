@@ -1,3 +1,11 @@
+/**
+ * File: components/DungeonRoom.jsx
+ * Description: Locked area warning component representing the Dungeon Gate, 
+ *              displayed when navigating up from the Forest.
+ * Author: Jacqueline Rael
+ * Date Created: 06/12/2026
+ */
+
 import React from "react";
 import { View, Text, Pressable } from "react-native";
 

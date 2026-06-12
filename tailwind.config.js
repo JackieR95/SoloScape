@@ -6,6 +6,12 @@ module.exports = {
     './components/**/*.{js,jsx,ts,tsx}',
   ],
   presets: [require('nativewind/preset')],
-  theme: { extend: {} },
+  theme: {
+    extend: {
+      fontFamily: {
+        mono: ["PressStart2P", "monospace"],
+      },
+    },
+  },
   plugins: [],
 };

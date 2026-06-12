@@ -1,3 +1,11 @@
+/**
+ * File: app/(tabs)/settings.jsx
+ * Description: Settings configurations screen featuring a custom Game Boy Velvet Cherry volume slider 
+ *              bar for audio control, and a red retro button to completely clear the local game save.
+ * Author: Jacqueline Rael
+ * Date Created: 06/12/2026
+ */
+
 import React from "react";
 import { View, Text, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -30,7 +38,10 @@ export default function SettingsScreen() {
       
       {/* Header Panel */}
       <View className="items-center py-2 border-b border-neutral-800 mb-6">
-        <Text className="text-emerald-400 font-mono uppercase tracking-widest text-lg font-bold">
+        <Text 
+          style={{ color: "#9775a6" }}
+          className="font-mono uppercase tracking-widest text-lg font-bold"
+        >
           Settings
         </Text>
       </View>
@@ -39,7 +50,10 @@ export default function SettingsScreen() {
       <View className="flex-1 justify-center items-center px-4">
         {/* Retro Volume Control Block */}
         <View className="w-full max-w-xs items-center bg-neutral-900 border-4 border-neutral-800 p-5 rounded-sm shadow-[4px_4px_0px_0px_#171717] mb-8">
-          <Text className="text-emerald-400 font-mono text-xs uppercase tracking-widest mb-4 font-bold">
+          <Text 
+            style={{ color: "#9775a6" }}
+            className="font-mono text-xs uppercase tracking-widest mb-4 font-bold"
+          >
             MUSIC & SFX VOLUME
           </Text>
           
@@ -64,12 +78,14 @@ export default function SettingsScreen() {
                   <Pressable
                     key={i}
                     onPress={() => setVolume((i + 1) / 10)}
-                    style={{ flex: 1, height: 24 }}
-                    className={`${
-                      isFilled 
-                        ? "bg-emerald-500 border-b-4 border-emerald-700" 
-                        : "bg-neutral-800 border-b-4 border-neutral-950"
-                    } rounded-xs active:scale-95`}
+                    style={{ 
+                      flex: 1, 
+                      height: 24,
+                      backgroundColor: isFilled ? "#9775a6" : "#412752",
+                      borderBottomColor: isFilled ? "#683a68" : "#2d162c",
+                      borderBottomWidth: 4,
+                    }}
+                    className="rounded-xs active:scale-95"
                   />
                 );
               })}

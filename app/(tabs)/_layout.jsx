@@ -1,3 +1,11 @@
+/**
+ * File: app/(tabs)/_layout.jsx
+ * Description: Bottom tabs navigation configuration and custom chiptune/retro styling 
+ *              for the active and inactive icon/label colors.
+ * Author: Jacqueline Rael
+ * Date Created: 06/12/2026
+ */
+
 import React from "react";
 import { Tabs } from "expo-router";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -9,7 +17,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#34d399", // Emerald-400
+        tabBarActiveTintColor: "#9775a6", // Velvet Cherry Lightest
         tabBarInactiveTintColor: "#737373", // Neutral-500
         tabBarStyle: {
           backgroundColor: "#0a0a0a",
@@ -20,10 +28,10 @@ export default function TabLayout() {
           paddingTop: 10,
         },
         tabBarLabelStyle: {
-          fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
-          fontSize: 10,
+          fontFamily: "PressStart2P",
+          fontSize: 7,
           fontWeight: "bold",
-          letterSpacing: 1,
+          letterSpacing: 0.5,
           textTransform: "uppercase",
         },
       }}

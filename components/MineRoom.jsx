@@ -1,3 +1,11 @@
+/**
+ * File: components/MineRoom.jsx
+ * Description: Basement mining zone layout component that displays the basement cave background 
+ *              and handles the interactable stone tap node and spring squish animations.
+ * Author: Jacqueline Rael
+ * Date Created: 06/12/2026
+ */
+
 import React, { useRef } from "react";
 import { View, Pressable, Animated } from "react-native";
 import { Image } from "expo-image";

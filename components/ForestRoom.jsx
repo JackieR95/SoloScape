@@ -1,3 +1,11 @@
+/**
+ * File: components/ForestRoom.jsx
+ * Description: Forest room layout component rendering the outdoor forest background 
+ *              and handling the large interactable tree press actions with spring animations.
+ * Author: Jacqueline Rael
+ * Date Created: 06/12/2026
+ */
+
 import React, { useRef } from "react";
 import { View, Pressable, Animated } from "react-native";
 import { Image } from "expo-image";

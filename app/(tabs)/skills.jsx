@@ -1,3 +1,11 @@
+/**
+ * File: app/(tabs)/skills.jsx
+ * Description: Skills progression viewport displaying character level, combat stats, woodcutting levels, 
+ *              and mining levels in chiptune-styled custom progress bars.
+ * Author: Jacqueline Rael
+ * Date Created: 06/12/2026
+ */
+
 import React from "react";
 import { View, Text, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -38,9 +46,8 @@ export default function SkillsScreen() {
         {/* Title and Level */}
         <View className="flex-row justify-between items-center mb-2">
           <Text 
-            className={`font-mono text-base font-bold ${
-              isCombat ? "text-red-400" : "text-emerald-400"
-            }`}
+            style={{ color: isCombat ? "#f87171" : "#9775a6" }}
+            className="font-mono text-base font-bold"
           >
             {title}
           </Text>
@@ -52,9 +59,8 @@ export default function SkillsScreen() {
         {/* Visual Progress Bar */}
         <View className="my-1">
           <Text 
-            className={`font-mono text-base tracking-tighter ${
-              isCombat ? "text-red-500" : "text-emerald-500"
-            }`}
+            style={{ color: isCombat ? "#ef4444" : "#9775a6" }}
+            className="font-mono text-base tracking-tighter"
           >
             {progressBar} <Text className="text-white text-xs">{progressPercent}%</Text>
           </Text>
@@ -92,7 +98,10 @@ export default function SkillsScreen() {
       
       {/* Header Panel */}
       <View className="items-center py-2 border-b border-neutral-800 mb-6">
-        <Text className="text-emerald-400 font-mono uppercase tracking-widest text-lg font-bold">
+        <Text 
+          style={{ color: "#9775a6" }}
+          className="font-mono uppercase tracking-widest text-lg font-bold"
+        >
           Character Skills
         </Text>
       </View>

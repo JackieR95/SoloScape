@@ -1,3 +1,11 @@
+/**
+ * File: app/(tabs)/bag.jsx
+ * Description: Inventory display screen showing current resource counts (Wood, Stone) in styled 
+ *              retro RPG grids and placeholder slots for upcoming items.
+ * Author: Jacqueline Rael
+ * Date Created: 06/12/2026
+ */
+
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -16,7 +24,10 @@ export default function BagScreen() {
     <SafeAreaView className="flex-1 bg-neutral-950 p-4">
       {/* Header Panel */}
       <View className="items-center py-2 border-b border-neutral-800 mb-6">
-        <Text className="text-emerald-400 font-mono uppercase tracking-widest text-lg font-bold">
+        <Text 
+          style={{ color: "#9775a6" }}
+          className="font-mono uppercase tracking-widest text-lg font-bold"
+        >
           Inventory
         </Text>
       </View>
@@ -31,7 +42,10 @@ export default function BagScreen() {
               WOOD
             </Text>
             {/* TODO: Change this to {resources.wood} */}
-            <Text className="text-emerald-400 font-mono text-base font-black mt-1">
+            <Text 
+              style={{ color: "#9775a6" }}
+              className="font-mono text-base font-black mt-1"
+            >
               x{woodCount}
             </Text>
           </View>
@@ -43,7 +57,10 @@ export default function BagScreen() {
               STONE
             </Text>
             {/* TODO: Change this to {resources.stone} */}
-            <Text className="text-emerald-400 font-mono text-base font-black mt-1">
+            <Text 
+              style={{ color: "#9775a6" }}
+              className="font-mono text-base font-black mt-1"
+            >
               x{stoneCount}
             </Text>
           </View>

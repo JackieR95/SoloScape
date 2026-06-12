@@ -1,3 +1,11 @@
+/**
+ * File: components/BlacksmithRoom.jsx
+ * Description: Locked room placeholder component representing the Blacksmith forge, 
+ *              displayed when navigating right from the starter room.
+ * Author: Jacqueline Rael
+ * Date Created: 06/12/2026
+ */
+
 import React from "react";
 import { View, Text, Pressable } from "react-native";
 

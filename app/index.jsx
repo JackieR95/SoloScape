@@ -1,118 +1,16 @@
+/**
+ * Program: SoloScape
+ * Description: A personalized, incremental fantasy adventure RPG that serves as a digital escape.
+ * Author: Jacqueline Rael
+ * Date Created: 06/12/2026
+ */
+
 import React from "react";
-import { View, Pressable } from "react-native";
+import { View, Pressable, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Image } from "expo-image";
 import { useGameState } from "@/context/GameStateContext";
-
-// 8-bit letter pixel matrices (5x5 grid)
-const letterGrids = {
-  S: [
-    [0, 1, 1, 1, 0],
-    [1, 0, 0, 0, 0],
-    [0, 1, 1, 1, 0],
-    [0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 0],
-  ],
-  o: [
-    [0, 0, 0, 0, 0],
-    [0, 1, 1, 1, 0],
-    [0, 1, 0, 1, 0],
-    [0, 1, 0, 1, 0],
-    [0, 1, 1, 1, 0],
-  ],
-  l: [
-    [0, 0, 1, 0, 0],
-    [0, 0, 1, 0, 0],
-    [0, 0, 1, 0, 0],
-    [0, 0, 1, 0, 0],
-    [0, 0, 1, 1, 0],
-  ],
-  c: [
-    [0, 0, 0, 0, 0],
-    [0, 1, 1, 1, 0],
-    [0, 1, 0, 0, 0],
-    [0, 1, 0, 0, 0],
-    [0, 1, 1, 1, 0],
-  ],
-  a: [
-    [0, 0, 0, 0, 0],
-    [0, 1, 1, 1, 0],
-    [0, 0, 0, 1, 0],
-    [0, 1, 1, 1, 0],
-    [0, 1, 0, 1, 0],
-  ],
-  p: [
-    [0, 0, 0, 0, 0],
-    [0, 1, 1, 1, 0],
-    [0, 1, 0, 1, 0],
-    [0, 1, 1, 1, 0],
-    [0, 1, 0, 0, 0],
-  ],
-  e: [
-    [0, 0, 0, 0, 0],
-    [0, 1, 1, 1, 0],
-    [0, 1, 1, 1, 0],
-    [0, 1, 0, 0, 0],
-    [0, 1, 1, 1, 0],
-  ],
-};
-
-const logoLetters = [
-  { char: "S", size: 8, color: "#34d399" },
-  { char: "o", size: 5, color: "#10b981" },
-  { char: "l", size: 6.5, color: "#10b981" },
-  { char: "o", size: 5, color: "#10b981" },
-  { char: "S", size: 8, color: "#34d399" },
-  { char: "c", size: 5, color: "#10b981" },
-  { char: "a", size: 5.5, color: "#10b981" },
-  { char: "p", size: 6.5, color: "#10b981" },
-  { char: "e", size: 5, color: "#10b981" },
-];
-
-function PixelLetter({ char, pixelSize, color }) {
-  const grid = letterGrids[char];
-  if (!grid) return null;
-
-  return (
-    <View style={{ width: pixelSize * 5, height: pixelSize * 5, marginHorizontal: 2 }}>
-      {/* 3D Pixel Shadow Layer */}
-      <View style={{ position: "absolute", top: pixelSize / 2, left: pixelSize / 2 }}>
-        {grid.map((row, rowIndex) => (
-          <View key={`sh-${rowIndex}`} style={{ flexDirection: "row", height: pixelSize }}>
-            {row.map((pixel, colIndex) => (
-              <View
-                key={`sh-${colIndex}`}
-                style={{
-                  width: pixelSize,
-                  height: pixelSize,
-                  backgroundColor: pixel === 1 ? "#064e3b" : "transparent",
-                }}
-              />
-            ))}
-          </View>
-        ))}
-      </View>
-      {/* Front Pixel Layer */}
-      <View style={{ position: "absolute", top: 0, left: 0 }}>
-        {grid.map((row, rowIndex) => (
-          <View key={`fr-${rowIndex}`} style={{ flexDirection: "row", height: pixelSize }}>
-            {row.map((pixel, colIndex) => (
-              <View
-                key={`fr-${colIndex}`}
-                style={{
-                  width: pixelSize,
-                  height: pixelSize,
-                  backgroundColor: pixel === 1 ? color : "transparent",
-                }}
-              />
-            ))}
-          </View>
-        ))}
-      </View>
-    </View>
-  );
-}
 
 export default function Index() {
   const { hasPlayed, isLoaded, startGame } = useGameState();
@@ -143,17 +41,41 @@ export default function Index() {
         contentFit="cover"
       />
 
-      {/* Title - Positioned at the top 20% of the screen */}
-      {/* Title logo - AI built this custom 8-bit pixel renderer for SoloScape so it looks retro for now. I'll swap this out when I find the font I want to use. */}
-      <View style={{ position: "absolute", top: "20%", flexDirection: "row", alignItems: "flex-end" }}>
-        {logoLetters.map((item, index) => (
-          <PixelLetter 
-            key={index}
-            char={item.char}
-            pixelSize={item.size}
-            color={item.color}
-          />
-        ))}
+      {/* Title - Positioned at the top 18% of the screen, styled as a retro signboard banner in Velvet Cherry GB colors */}
+      <View 
+        style={{ 
+          position: "absolute", 
+          top: "18%",
+          backgroundColor: "#2d162c",
+          borderColor: "#683a68",
+        }}
+        className="border-4 p-4 px-6 rounded-sm shadow-[6px_6px_0px_0px_#412752]"
+      >
+        <View style={{ position: "relative" }}>
+          {/* 3D Pixel Drop-Shadow Layer */}
+          <Text 
+            style={{ 
+              fontFamily: "PressStart2P", 
+              fontSize: 32, 
+              color: "#412752", 
+              position: "absolute",
+              top: 4,
+              left: 4,
+            }}
+          >
+            SoloScape
+          </Text>
+          {/* Main Foreground Text */}
+          <Text 
+            style={{ 
+              fontFamily: "PressStart2P", 
+              fontSize: 32, 
+              color: "#9775a6", 
+            }}
+          >
+            SoloScape
+          </Text>
+        </View>
       </View>
 
       {/* Start Button - Positioned at the bottom 30% of the screen */}

@@ -1,3 +1,11 @@
+/**
+ * File: components/FloatingText.jsx
+ * Description: Particle animation component that drifts upward and fades out to display 
+ *              gathered resource numbers (e.g. +1 Wood) directly above the tapped node.
+ * Author: Jacqueline Rael
+ * Date Created: 06/12/2026
+ */
+
 import React, { useEffect, useRef } from "react";
 import { Text, Animated } from "react-native";
 
@@ -32,7 +40,10 @@ export default function FloatingText({ x, y, text }) {
         zIndex: 100,
       }}
     >
-      <Text className="text-emerald-400 font-mono font-black text-sm shadow-black shadow-sm">
+      <Text 
+        style={{ color: "#9775a6" }}
+        className="font-mono font-black text-sm shadow-black shadow-sm"
+      >
         {text}
       </Text>
     </Animated.View>

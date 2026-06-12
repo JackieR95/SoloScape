@@ -1,3 +1,12 @@
+/**
+ * File: context/GameStateContext.jsx
+ * Description: Global state management context provider that loads/saves resource counts and skill 
+ *              levels to AsyncStorage, handles continuous background music loading/looping, and plays 
+ *              tap-based bubble click SFX.
+ * Author: Jacqueline Rael
+ * Date Created: 06/12/2026
+ */
+
 import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Audio } from "expo-av";
