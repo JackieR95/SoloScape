@@ -2,12 +2,12 @@ import React from "react";
 import { View, Text, Pressable } from "react-native";
 
 export default function PotionRoom({ onGoBack }) {
-  // Locked Area - AI generated this warning card and text message to save time, i'll replace it with the shop gameplay when finished
+  // Locked Area - AI generated this warning card and text message to save time, i'll replace it with the potion room gameplay when finished
   return (
     <View className="items-center p-6 max-w-xs border-4 border-yellow-500 bg-neutral-950/90 rounded-sm shadow-[6px_6px_0px_0px_#ca8a04]">
       <Text className="text-3xl mb-2">🧪</Text>
       <Text className="text-yellow-400 font-mono font-black text-center text-lg tracking-widest uppercase mb-2">
-        Potion Shop
+        Potion Room
       </Text>
       
       {/* Under Construction Mark */}

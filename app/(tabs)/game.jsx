@@ -91,7 +91,11 @@ export default function GameScreen() {
       {/* Location Header */}
       <View className="items-center py-2 border-b border-neutral-800">
         <Text className="text-emerald-400 font-mono uppercase tracking-widest text-lg font-bold">
-          {currentRoom === "room" ? "My House" : currentRoom.replace("-", " ")}
+          {currentRoom === "room" ? "My House" :
+           currentRoom === "potion-locked" ? "Potion Room" :
+           currentRoom === "blacksmith-locked" ? "Blacksmith" :
+           currentRoom === "dungeon-locked" ? "Dungeon" :
+           currentRoom}
         </Text>
       </View>
 
@@ -111,11 +115,11 @@ export default function GameScreen() {
           <MineRoom stone={resources.stone} onTap={handleTap} />
         )}
 
-        {currentRoom === "left-locked" && (
+        {currentRoom === "potion-locked" && (
           <PotionRoom onGoBack={() => setCurrentRoom("room")} />
         )}
 
-        {currentRoom === "right-locked" && (
+        {currentRoom === "blacksmith-locked" && (
           <BlacksmithRoom onGoBack={() => setCurrentRoom("room")} />
         )}
 
@@ -145,14 +149,14 @@ export default function GameScreen() {
         {currentRoom === "room" && (
           <>
             <Pressable 
-              onPress={() => setCurrentRoom("left-locked")} 
+              onPress={() => setCurrentRoom("potion-locked")} 
               className="absolute left-4 bg-neutral-800/80 p-3 border border-neutral-700 active:bg-neutral-700 z-10"
             >
               <Text className="text-white font-mono">◀</Text>
             </Pressable>
 
             <Pressable 
-              onPress={() => setCurrentRoom("right-locked")} 
+              onPress={() => setCurrentRoom("blacksmith-locked")} 
               className="absolute right-4 bg-neutral-800/80 p-3 border border-neutral-700 active:bg-neutral-700 z-10"
             >
               <Text className="text-white font-mono">▶</Text>

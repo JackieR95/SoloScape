@@ -13,8 +13,8 @@ export default function SettingsScreen() {
   const handleResetPress = () => {
     // 1. Reset all resource counts and levels
     resetGame();
-    // 2. Jump tabs back to the play page
-    router.replace("/(tabs)/game");
+    // 2. Route back to the start/index screen
+    router.replace("/");
   };
 
   return (

@@ -2,6 +2,7 @@ import React from "react";
 import { View, Button } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
+import { useGameState } from "@/context/GameStateContext";
 
 // 8-bit letter pixel matrices (5x5 grid)
 const letterGrids = {
@@ -113,6 +114,24 @@ function PixelLetter({ char, pixelSize, color }) {
 }
 
 export default function Index() {
+  const { hasPlayed, isLoaded, startGame } = useGameState();
+
+  React.useEffect(() => {
+    if (isLoaded && hasPlayed) {
+      router.replace("/(tabs)/game");
+    }
+  }, [isLoaded, hasPlayed]);
+
+  // Render a clean black screen while loading status or if redirecting, preventing layout flickering
+  if (!isLoaded || hasPlayed) {
+    return <View style={{ flex: 1, backgroundColor: "#000" }} />;
+  }
+
+  const handleStartGame = () => {
+    startGame();
+    router.replace("/(tabs)/game");
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#000" }}>
       
@@ -133,7 +152,7 @@ export default function Index() {
       <View style={{ position: "absolute", bottom: "25%", alignItems: "center" }}>
         <Button 
           title="Start Game" 
-          onPress={() => router.replace("/(tabs)/game")} 
+          onPress={handleStartGame} 
           color="#34d399" 
         />
       </View>
