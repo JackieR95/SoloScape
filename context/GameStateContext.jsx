@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const MAX_LEVEL = 5;
 
@@ -16,6 +17,46 @@ export function GameStateProvider({ children }) {
     mining: { level: 1, xp: 0 },
     character: { level: 1, xp: 0 },
   });
+
+  // Tracks whether the game data has finished loading from AsyncStorage
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load existing save data from AsyncStorage when the application starts
+  useEffect(() => {
+    async function loadSavedState() {
+      try {
+        const savedResources = await AsyncStorage.getItem("soloscape_resources");
+        const savedSkills = await AsyncStorage.getItem("soloscape_skills");
+        if (savedResources) {
+          setResources(JSON.parse(savedResources));
+        }
+        if (savedSkills) {
+          setSkills(JSON.parse(savedSkills));
+        }
+      } catch (e) {
+        console.error("Failed to load game save:", e);
+      } finally {
+        // Mark loading as complete so the auto-save effect can safely start tracking changes
+        setIsLoaded(true);
+      }
+    }
+    loadSavedState();
+  }, []);
+
+  // Autosave game progress to AsyncStorage whenever resources or skills change.
+  // We check isLoaded to prevent blank default states from overwriting saved data on boot.
+  useEffect(() => {
+    if (!isLoaded) return;
+    async function saveState() {
+      try {
+        await AsyncStorage.setItem("soloscape_resources", JSON.stringify(resources));
+        await AsyncStorage.setItem("soloscape_skills", JSON.stringify(skills));
+      } catch (e) {
+        console.error("Failed to save game state:", e);
+      }
+    }
+    saveState();
+  }, [resources, skills, isLoaded]);
 
   // Multipliers (Hoisted functions)
   function getWoodMultiplier() {
@@ -134,6 +175,10 @@ export function GameStateProvider({ children }) {
       mining: { level: 1, xp: 0 },
       character: { level: 1, xp: 0 },
     });
+    // Explicitly clean AsyncStorage when the save is wiped!
+    AsyncStorage.multiRemove(["soloscape_resources", "soloscape_skills"]).catch((e) =>
+      console.error("Failed to clear save storage on reset:", e)
+    );
   }
 
   return (
@@ -141,6 +186,7 @@ export function GameStateProvider({ children }) {
       value={{
         resources,
         skills,
+        isLoaded,
         getXpNeeded,
         getSkillXpNeeded,
         getWoodMultiplier,
