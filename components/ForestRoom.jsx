@@ -1,16 +1,59 @@
-import React from "react";
-import { View, Text, Pressable } from "react-native";
+import React, { useRef } from "react";
+import { View, Pressable, Animated } from "react-native";
+import { Image } from "expo-image";
 
 export default function ForestRoom({ wood, onTap }) {
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 0.9,
+      useNativeDriver: true,
+      friction: 4,
+      tension: 40,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+      friction: 4,
+      tension: 40,
+    }).start();
+  };
+
   return (
     <View className="items-center justify-center w-full h-full relative">
-      {/* clickable tree - AI generated this placeholder box to save layout time, i'll replace it with my own art asset later */}
+      <Image 
+        source={require("../assets/images/forest.png")} 
+        style={{ width: "100%", height: "100%", position: "absolute" }}
+        contentFit="contain"
+      />
+      
+      {/* Clickable Tree (tree.png) with spring squash-and-bounce animation */}
       <Pressable
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
         onPress={(e) => onTap(e, "wood")}
-        className="w-32 h-32 bg-emerald-700 border-4 border-emerald-950 items-center justify-center rounded-sm active:scale-95 shadow-[4px_4px_0px_0px_#064e3b]"
+        style={{
+          position: "absolute",
+          top: "20%",
+          left: "54%",
+          width: "36%",
+          height: "54%",
+          zIndex: 10,
+        }}
       >
-        <Text className="text-white font-mono font-bold text-center text-xs">TAP TREE</Text>
+        <Animated.View style={{ width: "100%", height: "100%", transform: [{ scale: scaleAnim }] }}>
+          <Image 
+            source={require("../assets/images/tree.png")} 
+            style={{ width: "100%", height: "100%" }}
+            contentFit="contain"
+          />
+        </Animated.View>
       </Pressable>
     </View>
   );
 }
+

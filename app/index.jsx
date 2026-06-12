@@ -1,7 +1,8 @@
 import React from "react";
-import { View, Button } from "react-native";
+import { View, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
+import { Image } from "expo-image";
 import { useGameState } from "@/context/GameStateContext";
 
 // 8-bit letter pixel matrices (5x5 grid)
@@ -135,6 +136,13 @@ export default function Index() {
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#000" }}>
       
+      {/* Background Image */}
+      <Image 
+        source={require("../assets/images/startPage.png")} 
+        style={{ width: "100%", height: "100%", position: "absolute" }}
+        contentFit="cover"
+      />
+
       {/* Title - Positioned at the top 20% of the screen */}
       {/* Title logo - AI built this custom 8-bit pixel renderer for SoloScape so it looks retro for now. I'll swap this out when I find the font I want to use. */}
       <View style={{ position: "absolute", top: "20%", flexDirection: "row", alignItems: "flex-end" }}>
@@ -148,14 +156,23 @@ export default function Index() {
         ))}
       </View>
 
-      {/* Start Button - Positioned at the bottom 25% of the screen */}
-      <View style={{ position: "absolute", bottom: "25%", alignItems: "center" }}>
-        <Button 
-          title="Start Game" 
-          onPress={handleStartGame} 
-          color="#34d399" 
+      {/* Start Button - Positioned at the bottom 30% of the screen */}
+      <Pressable 
+        onPress={handleStartGame} 
+        style={{
+          position: "absolute",
+          bottom: "30%",
+          width: "45%",
+          aspectRatio: 3,
+        }}
+        className="active:scale-95"
+      >
+        <Image 
+          source={require("../assets/images/button.png")} 
+          style={{ width: "100%", height: "100%" }}
+          contentFit="contain"
         />
-      </View>
+      </Pressable>
 
     </SafeAreaView>
   );

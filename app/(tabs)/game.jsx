@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, Pressable } from "react-native";
+import { Image } from "expo-image";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 
@@ -21,7 +22,8 @@ export default function GameScreen() {
     gatherWood, 
     gatherStone, 
     getWoodMultiplier, 
-    getStoneMultiplier 
+    getStoneMultiplier,
+    playBubbleClick
   } = useGameState();
 
   // Reset currentRoom back to house when the game save is cleared
@@ -41,6 +43,7 @@ export default function GameScreen() {
   // Handle tap coordinate capture and particle triggers
   const handleTap = (event, type) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    playBubbleClick();
     
     // pageX and pageY measure the tap relative to the entire screen
     const { pageX, pageY } = event.nativeEvent;
@@ -100,19 +103,168 @@ export default function GameScreen() {
       </View>
 
       {/* Main Viewport */}
-      <View className="flex-1 justify-center items-center bg-neutral-900 border-4 border-neutral-700 rounded-sm relative my-4 overflow-hidden">
+      <View className="flex-1 justify-center items-center relative my-4 overflow-hidden w-full">
         
         {/* Room Views */}
         {currentRoom === "room" && (
-          <Text className="text-neutral-500 font-mono text-center">My House Placeholder</Text>
+          <View style={{ width: "100%", aspectRatio: 1, position: "relative" }}>
+            <Image 
+              source={require("../../assets/images/starterRoom.png")} 
+              style={{ width: "100%", height: "100%" }}
+              contentFit="contain"
+            />
+            {/* Carpet visual overlay in center of floor */}
+            <Image 
+              source={require("../../assets/images/carpet.png")} 
+              style={{
+                position: "absolute",
+                top: "40%",
+                left: "30%",
+                width: "40%",
+                height: "26.67%",
+                zIndex: 5,
+              }}
+              contentFit="contain"
+            />
+            <Image 
+              source={require("../../assets/images/doorway.png")} 
+              style={{
+                position: "absolute",
+                top: 0,
+                height: "30%",
+                left: "66.67%",
+                width: "21.18%",
+                zIndex: 10,
+              }}
+              contentFit="contain"
+            />
+            {/* Painting visual overlay on left wall */}
+            <Image 
+              source={require("../../assets/images/art1.png")} 
+              style={{
+                position: "absolute",
+                top: "7.5%",
+                left: "15%",
+                width: "10%",
+                height: "10%",
+                zIndex: 10,
+              }}
+              contentFit="contain"
+            />
+            {/* Up arrow for room transition, placed under the doorway */}
+            <Pressable 
+              onPress={handleGoUp} 
+              style={{
+                position: "absolute",
+                top: "30%",
+                left: "72%",
+                zIndex: 20,
+              }}
+              className="active:scale-95"
+            >
+              <Image 
+                source={require("../../assets/images/Arrow.png")} 
+                style={{ width: 40, height: 40, transform: [{ rotate: "-90deg" }] }}
+                contentFit="contain"
+              />
+            </Pressable>
+
+            {/* Stairs visual overlay at bottom-middle against edge */}
+            <Image 
+              source={require("../../assets/images/stairs.png")} 
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: "40%",
+                width: "20%",
+                height: "20%",
+                zIndex: 10,
+              }}
+              contentFit="contain"
+            />
+
+            {/* Down arrow for room transition, placed above the stairs */}
+            <Pressable 
+              onPress={handleGoDown} 
+              style={{
+                position: "absolute",
+                bottom: "20%",
+                left: "45%",
+                zIndex: 20,
+              }}
+              className="active:scale-95"
+            >
+              <Image 
+                source={require("../../assets/images/Arrow.png")} 
+                style={{ width: 40, height: 40, transform: [{ rotate: "90deg" }] }}
+                contentFit="contain"
+              />
+            </Pressable>
+          </View>
         )}
         
         {currentRoom === "forest" && (
-          <ForestRoom wood={resources.wood} onTap={handleTap} />
+          <View style={{ width: "100%", aspectRatio: 1, position: "relative" }}>
+            <ForestRoom wood={resources.wood} onTap={handleTap} />
+            {/* Up arrow for forest transition (to Dungeon) */}
+            <Pressable 
+              onPress={handleGoUp} 
+              style={{
+                position: "absolute",
+                top: "5%",
+                left: "8%",
+                zIndex: 20,
+              }}
+              className="active:scale-95"
+            >
+              <Image 
+                source={require("../../assets/images/Arrow.png")} 
+                style={{ width: 40, height: 40, transform: [{ rotate: "-90deg" }] }}
+                contentFit="contain"
+              />
+            </Pressable>
+
+            {/* Down arrow for forest transition (back to My House) */}
+            <Pressable 
+              onPress={handleGoDown} 
+              style={{
+                position: "absolute",
+                bottom: "5%",
+                left: "48%",
+                zIndex: 20,
+              }}
+              className="active:scale-95"
+            >
+              <Image 
+                source={require("../../assets/images/Arrow.png")} 
+                style={{ width: 40, height: 40, transform: [{ rotate: "90deg" }] }}
+                contentFit="contain"
+              />
+            </Pressable>
+          </View>
         )}
 
         {currentRoom === "mine" && (
-          <MineRoom stone={resources.stone} onTap={handleTap} />
+          <View style={{ width: "100%", aspectRatio: 1, position: "relative" }}>
+            <MineRoom stone={resources.stone} onTap={handleTap} />
+            {/* Up arrow for basement transition, placed under the ladder */}
+            <Pressable 
+              onPress={handleGoUp} 
+              style={{
+                position: "absolute",
+                top: "30%",
+                left: "80%",
+                zIndex: 20,
+              }}
+              className="active:scale-95"
+            >
+              <Image 
+                source={require("../../assets/images/LightArrow.png")} 
+                style={{ width: 40, height: 40, transform: [{ rotate: "-90deg" }] }}
+                contentFit="contain"
+              />
+            </Pressable>
+          </View>
         )}
 
         {currentRoom === "potion-locked" && (
@@ -128,38 +280,32 @@ export default function GameScreen() {
         )}
 
         {/* Navigation Overlay */}
-        {(currentRoom === "mine" || currentRoom === "room" || currentRoom === "forest") && (
-          <Pressable 
-            onPress={handleGoUp} 
-            className="absolute top-4 bg-neutral-800/80 p-3 border border-neutral-700 active:bg-neutral-700 z-10"
-          >
-            <Text className="text-white font-mono">▲</Text>
-          </Pressable>
-        )}
 
-        {(currentRoom === "forest" || currentRoom === "room") && (
-          <Pressable 
-            onPress={handleGoDown} 
-            className="absolute bottom-4 bg-neutral-800/80 p-3 border border-neutral-700 active:bg-neutral-700 z-10"
-          >
-            <Text className="text-white font-mono">▼</Text>
-          </Pressable>
-        )}
 
         {currentRoom === "room" && (
           <>
             <Pressable 
               onPress={() => setCurrentRoom("potion-locked")} 
-              className="absolute left-4 bg-neutral-800/80 p-3 border border-neutral-700 active:bg-neutral-700 z-10"
+              className="absolute left-4 active:scale-95 z-10"
+              style={{ marginTop: 5 }}
             >
-              <Text className="text-white font-mono">◀</Text>
+              <Image 
+                source={require("../../assets/images/Arrow.png")} 
+                style={{ width: 40, height: 40, transform: [{ rotate: "180deg" }] }}
+                contentFit="contain"
+              />
             </Pressable>
 
             <Pressable 
               onPress={() => setCurrentRoom("blacksmith-locked")} 
-              className="absolute right-4 bg-neutral-800/80 p-3 border border-neutral-700 active:bg-neutral-700 z-10"
+              className="absolute right-4 active:scale-95 z-10"
+              style={{ marginTop: 5 }}
             >
-              <Text className="text-white font-mono">▶</Text>
+              <Image 
+                source={require("../../assets/images/Arrow.png")} 
+                style={{ width: 40, height: 40 }}
+                contentFit="contain"
+              />
             </Pressable>
           </>
         )}

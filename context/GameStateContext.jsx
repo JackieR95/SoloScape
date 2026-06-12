@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Audio } from "expo-av";
 
 const MAX_LEVEL = 5;
 
@@ -24,6 +25,10 @@ export function GameStateProvider({ children }) {
   // Tracks whether the user has started/played the game before
   const [hasPlayed, setHasPlayed] = useState(false);
 
+  // Audio volume state
+  const [volume, setVolume] = useState(0.5);
+  const bgMusicRef = useRef(null);
+
   // Load existing save data from AsyncStorage when the application starts
   useEffect(() => {
     async function loadSavedState() {
@@ -31,6 +36,7 @@ export function GameStateProvider({ children }) {
         const savedResources = await AsyncStorage.getItem("soloscape_resources");
         const savedSkills = await AsyncStorage.getItem("soloscape_skills");
         const savedHasPlayed = await AsyncStorage.getItem("soloscape_has_played");
+        const savedVolume = await AsyncStorage.getItem("soloscape_volume");
         if (savedResources) {
           setResources(JSON.parse(savedResources));
         }
@@ -39,6 +45,9 @@ export function GameStateProvider({ children }) {
         }
         if (savedHasPlayed === "true") {
           setHasPlayed(true);
+        }
+        if (savedVolume) {
+          setVolume(parseFloat(savedVolume));
         }
       } catch (e) {
         console.error("Failed to load game save:", e);
@@ -50,7 +59,7 @@ export function GameStateProvider({ children }) {
     loadSavedState();
   }, []);
 
-  // Autosave game progress to AsyncStorage whenever resources, skills, or hasPlayed status change.
+  // Autosave game progress to AsyncStorage whenever resources, skills, hasPlayed, or volume status change.
   // We check isLoaded to prevent blank default states from overwriting saved data on boot.
   useEffect(() => {
     if (!isLoaded) return;
@@ -59,12 +68,83 @@ export function GameStateProvider({ children }) {
         await AsyncStorage.setItem("soloscape_resources", JSON.stringify(resources));
         await AsyncStorage.setItem("soloscape_skills", JSON.stringify(skills));
         await AsyncStorage.setItem("soloscape_has_played", hasPlayed ? "true" : "false");
+        await AsyncStorage.setItem("soloscape_volume", volume.toString());
       } catch (e) {
         console.error("Failed to save game state:", e);
       }
     }
     saveState();
-  }, [resources, skills, hasPlayed, isLoaded]);
+  }, [resources, skills, hasPlayed, volume, isLoaded]);
+
+  // Background Music continuous loop setup
+  useEffect(() => {
+    let active = true;
+    async function initMusic() {
+      try {
+        // Configure audio session for playback in Expo
+        await Audio.setAudioModeAsync({
+          playsInSilentModeIOS: true,
+          staysActiveInBackground: false,
+          shouldRouteThroughEarpieceAndroid: false,
+        });
+
+        const { sound } = await Audio.Sound.createAsync(
+          require("../assets/sound/backgroundMusic.mp3"),
+          {
+            shouldPlay: true,
+            isLooping: true,
+            volume: volume,
+          }
+        );
+
+        if (active) {
+          bgMusicRef.current = sound;
+        } else {
+          sound.unloadAsync();
+        }
+      } catch (e) {
+        console.error("Failed to initialize background music:", e);
+      }
+    }
+
+    if (isLoaded) {
+      initMusic();
+    }
+
+    return () => {
+      active = false;
+      if (bgMusicRef.current) {
+        bgMusicRef.current.unloadAsync();
+        bgMusicRef.current = null;
+      }
+    };
+  }, [isLoaded]);
+
+  // Adjust volume dynamically when volume state changes
+  useEffect(() => {
+    if (bgMusicRef.current) {
+      bgMusicRef.current.setVolumeAsync(volume).catch((e) =>
+        console.error("Failed to update music volume:", e)
+      );
+    }
+  }, [volume]);
+
+  // Bubble click sound trigger function
+  const playBubbleClick = async () => {
+    try {
+      const { sound } = await Audio.Sound.createAsync(
+        require("../assets/sound/bubbleClick.wav"),
+        { shouldPlay: true, volume: Math.min(1.0, volume * 1.5) }
+      );
+      sound.setOnPlaybackStatusUpdate((status) => {
+        if (status.didJustFinish) {
+          sound.unloadAsync();
+        }
+      });
+    } catch (e) {
+      console.error("Failed to play bubble click sound:", e);
+    }
+  };
 
   // Multipliers (Hoisted functions)
   function getWoodMultiplier() {
@@ -211,6 +291,9 @@ export function GameStateProvider({ children }) {
         gatherWood,
         gatherStone,
         resetGame,
+        volume,
+        setVolume,
+        playBubbleClick,
       }}
     >
       {children}
